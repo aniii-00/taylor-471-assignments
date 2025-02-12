@@ -6,11 +6,15 @@ public class Bullet : MonoBehaviour
     Rigidbody rb;
 
     [SerializeField]
-    int speed = 5;
+    float speed = 10;
+
+    [SerializeField]
+    float lifetime = 1;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
         rb = GetComponent<Rigidbody>();
+      
     
     }
 
@@ -18,5 +22,7 @@ public class Bullet : MonoBehaviour
     void Update()
     {
         rb.AddForce(transform.forward * speed );
+        
+        Destroy(gameObject, lifetime);
     }
 }

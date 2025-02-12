@@ -7,6 +7,11 @@ public class FirstPersonController : MonoBehaviour
     Vector2 mouseMovement;
     float cameraUpRotation = 0.0f;
     CharacterController controller;
+ 
+
+// -{Serialize Fields}-
+
+
     [SerializeField]
     float speed = 2.0f;
     [SerializeField]
@@ -22,18 +27,19 @@ public class FirstPersonController : MonoBehaviour
     [SerializeField]
     GameObject Bullet;
 
+   
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
         controller = GetComponent<CharacterController>();
+        Cursor.lockState = CursorLockMode.Locked;
         
     }
 
     // Update is called once per frame
     void Update()
     {
-        float moveX = movement.x;
-        float moveZ = movement.y;
+        //Camera
         float lookX= mouseMovement.x * Time.deltaTime * mouseSensitivity;
         float lookY= mouseMovement.y * Time.deltaTime * mouseSensitivity;
 
@@ -43,10 +49,17 @@ public class FirstPersonController : MonoBehaviour
 
         cam.transform.localRotation = Quaternion.Euler(cameraUpRotation,0,0);
 
-        transform.Rotate(Vector3.up * lookX);
 
+       //Movement
+        transform.Rotate(Vector3.up * lookX);
+        float moveX = movement.x;
+        float moveZ = movement.y;
         Vector3 actual_movement = (transform.forward * moveZ) + (transform.right * moveX);
-        controller.Move(actual_movement * Time.deltaTime * speed);
+        controller.SimpleMove(actual_movement * speed);
+
+
+    
+       
     }
 
     void OnMove(InputValue moveVal)
