@@ -4,32 +4,69 @@ using UnityEngine.InputSystem;
 public class PlayerStateManager : MonoBehaviour
 {
 
-    // -{ Variables }-
+    // -{ States }- \\
 
-
+    
     public PlayerBaseState currentState;
+
+    [HideInInspector]
+    public PlayerRunState runState = new PlayerRunState();
     
     [HideInInspector]
     public PlayerIdleState idleState = new PlayerIdleState();
 
     [HideInInspector]
     public PlayerWalkState walkState = new PlayerWalkState();
-
+    [HideInInspector]
     public PlayerSneakState sneakState = new PlayerSneakState();
+
+
+    // -{ Objects }- \\
 
     [HideInInspector]
     public Vector2 movement;
-     public float default_speed = 1;
+    
+    [SerializeField]
+    GameObject cam;
     CharacterController controller;
 
+
+
+    
+
+    // -{ SerializeFields }- \\
+    [SerializeField]
+    float JumpHeight = 1.0f;
+
+    [SerializeField]
+    float gravityVal = 9.8f;
+
+    [SerializeField]
+    float mouseSensitivity = 100;
+
+    //-{ Number Variables }- \\
+    float ySpeed = 0;
+    public float default_speed = 5;
+    float cameraUpRotation = 0.0f;
+    Vector2 mouseMovement;
+
+    Vector3 actual_movement;
+
+    // -{ Bools }- \\
+
     public bool isSneaking = false;
+
+    public bool isRunning = false;
+
+    public bool hasJumped = false;
 
    
     
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        controller=GetComponent<CharacterController>();
+        controller = GetComponent<CharacterController>();
+        Cursor.lockState = CursorLockMode.Locked;
 
         SwitchState(idleState);
 
@@ -38,7 +75,9 @@ public class PlayerStateManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+
         currentState.UpdateState(this);
+
     }
 
     //Handle Input
@@ -49,7 +88,7 @@ public class PlayerStateManager : MonoBehaviour
         print("Moving!");
     }
 
-    void OnSprint()
+    void OnCrouch()
     {
         if (isSneaking == false)
         {
@@ -60,6 +99,24 @@ public class PlayerStateManager : MonoBehaviour
         }
     }
 
+    void OnSprint(InputValue sprintVal)
+    {
+        if (sprintVal.isPressed)
+        {
+            isRunning = true;
+        } else
+        {
+            isRunning = false;
+        }
+    }
+
+    
+       void OnLook(InputValue lookVal)
+    {
+        mouseMovement = lookVal.Get<Vector2>();
+
+    }
+
     // Helper Functions
 
     public void MovePlayer(float speed)
@@ -67,8 +124,11 @@ public class PlayerStateManager : MonoBehaviour
         float moveX = movement.x;
         float moveZ = movement.y;
 
-        Vector3 actual_movement = new Vector3(moveX, 0, moveZ);
-        controller.Move(actual_movement * Time.deltaTime);
+        Vector3 applied_movement = new Vector3 (moveX, 0, moveZ);
+
+   
+
+        controller.Move(applied_movement * Time.deltaTime * speed);
         
     }
 
