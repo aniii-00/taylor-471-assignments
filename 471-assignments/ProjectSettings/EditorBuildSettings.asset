@@ -5,9 +5,21 @@ EditorBuildSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Scenes:
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/SampleScene.unity
     guid: 99c9720ab356a0642a771bea13969a05
+  - enabled: 0
+    path: Assets/Projects/Simple State Machine/SimpleStateMachine.unity
+    guid: 5eaafbbfee3d94aaabc0d0c900f147cc
+  - enabled: 1
+    path: Assets/Projects/rollaball_/pls save.unity
+    guid: 577a437874b7747db948ee809905c85e
+  - enabled: 1
+    path: Assets/Projects/Polishing Demo/PolishingDemo.unity
+    guid: 85112a966f05e48dc9dc35984d4d210d
+  - enabled: 1
+    path: Assets/Projects/Polishing Demo/PolishEndGame.unity
+    guid: 5c18787c8ee2a4a428ceb2303442af42
   m_configObjects:
     com.unity.input.settings.actions: {fileID: -944628639613478452, guid: 052faaac586de48259a63d0c4782560b, type: 3}
   m_UseUCBPForAssetBundles: 0
